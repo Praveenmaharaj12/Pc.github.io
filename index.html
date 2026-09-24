@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Battle Arena Tournament</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#06101d;color:#fff;font-family:Arial,sans-serif}.app{max-width:430px;margin:auto;min-height:100vh;background:linear-gradient(#071321,#0b1727)}
+header{padding:16px;display:flex;justify-content:space-between;align-items:center}.logo{font-size:20px;font-weight:900}.logo span,.gold{color:#ffd21a}
+.screen{display:none}.screen.active{display:block}.pad{padding:16px}.hero,.card,.tour,.wallet,.panel{background:#101f32;border:1px solid #243b58;border-radius:17px;padding:15px;margin:10px 0}.hero{background:linear-gradient(135deg,#27115d,#0d506d)}h1{font-size:28px;margin:4px 0 10px}h2{font-size:20px}.muted{color:#aebaca;font-size:13px}.btn{border:0;border-radius:11px;background:#ffd21a;color:#111;font-weight:800;padding:12px 17px;cursor:pointer}.btn.full{width:100%;margin-top:12px}.btn.secondary{background:#1b2b40;color:#fff}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.tile{background:#101f32;border:1px solid #243b58;border-radius:13px;padding:12px 5px;text-align:center;font-size:11px}.tile b{display:block;font-size:20px;color:#ffd21a;margin-bottom:4px}.tag{display:inline-block;background:#2468b5;border-radius:7px;padding:4px 7px;font-size:10px}.row{display:flex;justify-content:space-between;align-items:center;gap:10px}.form label{display:block;color:#c7d0dc;font-size:13px;margin:11px 0 5px}.form input,.form select{width:100%;padding:12px;border-radius:10px;border:1px solid #304762;background:#0b1828;color:#fff}.tabs{display:flex;gap:7px}.tabs button{flex:1}.balance{font-size:30px;font-weight:900}.list{padding:10px 0;border-bottom:1px solid #263a52}.danger{color:#ff9b9b}.notice{font-size:12px;line-height:1.5;color:#9eabba}.status{color:#78e08f;font-weight:700}nav{position:sticky;bottom:0;display:grid;grid-template-columns:repeat(5,1fr);background:#081423;border-top:1px solid #263a52;padding:8px 3px}nav button{background:none;border:0;color:#aebaca;font-size:10px}nav button.active{color:#ffd21a}.hidden{display:none}
+</style></head>
+<body><div class="app">
+<header><div class="logo">BATTLE <span>ARENA</span></div><button class="btn secondary" onclick="show('profile')">Profile</button></header>
+
+<div id="home" class="screen active"><div class="pad">
+<div class="hero"><h1>BATTLE FOR GLORY</h1><p class="muted">Compete in organized tournaments and track your performance.</p><button class="btn" onclick="show('tournaments')">Explore Tournaments</button></div>
+<div class="grid"><div class="tile" onclick="show('tournaments')"><b>🏆</b>Tournaments</div><div class="tile" onclick="show('team')"><b>👥</b>My Team</div><div class="tile" onclick="show('leaderboard')"><b>📊</b>Leaderboard</div><div class="tile" onclick="show('wallet')"><b>⭐</b>Points</div></div>
+<h2>Upcoming</h2><div class="tour"><span class="tag">SOLO</span><h3>Daily Rush Cup</h3><p class="muted">24 Sep 2026 • 7:00 PM • BR Mode</p><b class="gold">10,000 points prize pool</b><button class="btn full" onclick="show('register')">Register</button></div>
+<div class="tour"><span class="tag">SQUAD</span><h3>Friends Battle League</h3><p class="muted">26 Sep 2026 • 6:00 PM • CS Mode</p><b class="gold">50,000 points prize pool</b></div>
+</div></div>
+
+<div id="tournaments" class="screen"><div class="pad"><div class="row"><h2>Tournaments</h2><div class="tabs"><button class="btn">Upcoming</button><button class="btn secondary">Live</button></div></div>
+<div class="tour"><span class="tag">SOLO</span><h3>Daily Rush Cup</h3><p class="muted">50 players • 24 Sep • 7:00 PM</p><b class="gold">10,000 points</b><button class="btn full" onclick="show('register')">Register</button></div>
+<div class="tour"><span class="tag">SQUAD</span><h3>Grand Championship</h3><p class="muted">200 teams • 27 Sep • 6:00 PM</p><b class="gold">100,000 points</b><button class="btn full" onclick="show('team')">Create / Join Team</button></div>
+</div></div>
+
+<div id="register" class="screen"><div class="pad form"><h2>Tournament Registration</h2><label>In-game name</label><input id="ign" placeholder="Game name"><label>UID</label><input id="uid" inputmode="numeric" placeholder="Game UID"><label>Username</label><input id="regUser" placeholder="Username"><label>Password</label><input id="regPass" type="password" placeholder="Password"><label>Tournament</label><select><option>Daily Rush Cup</option><option>Grand Championship</option></select><p class="notice">Demo only. Passwords must be securely hashed on a real server; never store them as plain text.</p><button class="btn full" onclick="register()">Create Account & Register</button></div></div>
+
+<div id="login" class="screen"><div class="pad form"><h2>Login</h2><label>Username</label><input id="loginUser" placeholder="Username"><label>Password</label><input id="loginPass" type="password" placeholder="Password"><button class="btn full" onclick="login()">Login</button><button class="btn secondary full" onclick="show('register')">Create Account</button></div></div>
+
+<div id="team" class="screen"><div class="pad"><h2>My Team</h2><div class="panel"><h3>⚡ No team yet</h3><p class="muted">Create a team or enter an invite code.</p><button class="btn" onclick="createTeam()">Create Team</button></div><div class="form"><label>Team invite code</label><input id="invite" placeholder="e.g. TEAM-1234"><button class="btn full" onclick="joinTeam()">Join Team</button></div></div></div>
+
+<div id="match" class="screen"><div class="pad"><h2>Match Room</h2><div class="panel"><p class="muted">Daily Rush Cup</p><h2>Room ID: <span class="gold">—</span></h2><h3>Password: <span class="gold">—</span></h3><p class="notice">Room details are hidden until an organizer publishes them. Do not share private room credentials publicly.</p></div><button class="btn full" onclick="alert('Room details are not published yet.')">Check Match Status</button></div></div>
+
+<div id="leaderboard" class="screen"><div class="pad"><h2>Leaderboard</h2><div class="list">🥇 RDX★GAMER <span class="gold">1420 pts</span></div><div class="list">🥈 LEGEND_777 <span class="gold">1380 pts</span></div><div class="list">🥉 SKY-BOY <span class="gold">1305 pts</span></div><div class="list">4. FF_LOVER <span class="gold">1200 pts</span></div></div></div>
+
+<div id="wallet" class="screen"><div class="pad"><h2>Points Wallet</h2><div class="wallet"><div class="muted">Demo points balance</div><div class="balance">0 pts</div><p class="notice">This prototype uses non-cash points only. It does not process real-money deposits, withdrawals, entry fees, or cash prizes.</p><button class="btn secondary" onclick="alert('Points are demo-only.')">Add Demo Points</button></div></div></div>
+
+<div id="profile" class="screen"><div class="pad"><h2>Profile</h2><div class="panel"><h3 id="profileName">Guest Player</h3><p class="muted">UID: Not linked</p><p>Tournaments: 0 • Wins: 0 • Top 3: 0</p></div><button class="btn full" onclick="show('login')">Login / Switch Account</button></div></div>
+
+<div id="admin" class="screen"><div class="pad"><h2>Admin Demo</h2><div class="panel"><h3>Create Tournament</h3><p class="muted">Set name, mode, schedule and publish status.</p><button class="btn" onclick="alert('Demo tournament created.')">Create</button></div><div class="panel"><h3>Manage Matches</h3><button class="btn secondary" onclick="alert('Demo: match controls opened.')">Open Controls</button></div><div class="panel"><h3>Publish Room</h3><button class="btn secondary" onclick="alert('Demo: room details remain disabled in this prototype.')">Publish</button></div></div></div>
+
+<nav><button id="n-home" class="active" onclick="show('home')">⌂<br>Home</button><button id="n-tournaments" onclick="show('tournaments')">🏆<br>Tournaments</button><button id="n-team" onclick="show('team')">👥<br>Team</button><button id="n-match" onclick="show('match')">🎮<br>Match</button><button id="n-wallet" onclick="show('wallet')">⭐<br>Points</button></nav>
+</div>
+<script>
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));let n=document.getElementById('n-'+id);if(n)n.classList.add('active')}
+function register(){let a=ign.value,b=uid.value,c=regUser.value,d=regPass.value;if(!a||!b||!c||!d){alert('Please fill all fields.');return}localStorage.setItem('demoUser',c);profileName.textContent=a;alert('Demo account created and tournament registration saved!');show('home')}
+function login(){if(!loginUser.value||!loginPass.value){alert('Enter username and password.');return}profileName.textContent=loginUser.value;alert('Demo login successful!');show('home')}
+function createTeam(){alert('Demo team created: BATTLE-4821');}
+function joinTeam(){if(!invite.value){alert('Enter an invite code.');return}alert('Demo: join request sent for '+invite.value);}
+</script></body></html>
